@@ -1,0 +1,69 @@
+name: Validate Cloud Environment Request YAML
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'requests/**/*.yaml'
+      - 'requests/**/*.yml'
+
+jobs:
+  validate:
+    name: Validate YAML against schema
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install ajv-cli
+        run: npm install -g ajv-cli ajv-formats
+
+      - name: Find YAML files to validate
+        id: find-yaml
+        run: |
+          # Get list of changed YAML files in requests directory
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.sha }} -- 'requests/**/*.yaml' 'requests/**/*.yml' | grep -v '.gitkeep' || true)
+          
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "No YAML files changed in requests directory"
+            echo "files=" >> $GITHUB_OUTPUT
+          else
+            echo "Found changed files:"
+            echo "$CHANGED_FILES"
+            # Convert to space-separated for the validation step
+            FILES_LIST=$(echo "$CHANGED_FILES" | tr '\n' ' ')
+            echo "files=$FILES_LIST" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Validate YAML files against schema
+        if: steps.find-yaml.outputs.files != ''
+        run: |
+          SCHEMA_PATH="schemas/cloud-environment-request.schema.json"
+          FAILED=0
+          
+          for file in ${{ steps.find-yaml.outputs.files }}; do
+            echo "Validating: $file"
+            if ajv validate -s "$SCHEMA_PATH" -d "$file" --spec=draft7 -c ajv-formats; then
+              echo "✅ $file is valid"
+            else
+              echo "❌ $file failed validation"
+              FAILED=1
+            fi
+          done
+          
+          if [ $FAILED -eq 1 ]; then
+            echo "::error::One or more YAML files failed schema validation"
+            exit 1
+          fi
+          
+          echo "✅ All YAML files passed validation"
+
+      - name: Skip validation message
+        if: steps.find-yaml.outputs.files == ''
+        run: echo "ℹ️ No YAML files in requests/ directory were changed, skipping validation"
