@@ -41,11 +41,12 @@ sampleissue.md                         # Example issue format
 - Saves YAML file to `requests/` directory with naming format: `<application-name>-<issue-number>.yaml`
 
 **How to use:**
-```
-Use the convert-issue-to-yaml agent to process issue #<number>
-```
 
-The agent handles all parsing, validation, and file creation automatically.
+When assigned to an issue, simply instruct Copilot to use the agent:
+- "Please use the convert-issue-to-yaml agent to process this issue"
+- "Use the convert-issue-to-yaml agent to convert this cloud request to YAML"
+
+The agent handles all parsing, validation, and file creation automatically. It will create a properly formatted YAML file in the `requests/` directory.
 
 ## Validating YAML Files
 
@@ -110,7 +111,7 @@ The `cloud-environment-request.schema.json` defines the required structure for a
 - Email addresses must be valid format
 - Cloud provider must be one of: Azure, AWS, GCP
 - Legal entity must be numeric string
-- Schema version must follow pattern "\\d+\\.\\d+" (e.g., "1.0")
+- Schema version must follow pattern `\d+\.\d+` (e.g., "1.0")
 
 ## Issue Template Format
 
@@ -162,7 +163,7 @@ See `requests/example-output.yaml` for a complete example of properly formatted 
 ### Processing a new cloud request issue
 1. Issue is created with `cloud-request` label (automatic via template)
 2. Workflow assigns Copilot and adds `copilot-processing` label
-3. Use: `@copilot use the convert-issue-to-yaml agent to process this issue`
+3. Instruct Copilot: "Please use the convert-issue-to-yaml agent to process this issue"
 4. Agent generates YAML file in `requests/` directory
 5. Create PR with the generated file
 6. Validation workflow runs automatically on PR
