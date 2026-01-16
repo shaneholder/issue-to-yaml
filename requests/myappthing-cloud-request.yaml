@@ -1,0 +1,53 @@
+# Cloud Environment Request
+# Application: MyAppThing
+# Generated at: 2026-01-16T13:06:36Z
+
+metadata:
+  generated_at: "2026-01-16T13:06:36Z"
+  schema_version: "1.0"
+
+description: |
+  Project does cool stuff
+
+environments:
+  production:
+    requested: false
+  development:
+    requested: true
+    azure_region: eastus2
+  test:
+    requested: false
+  staging:
+    requested: false
+
+application:
+  name: MyAppThing
+  legal_entity: "20000"
+  cloud_provider: Azure
+  distribution_list_email: a@b.com
+
+compliance:
+  hipaa: true
+  ccpa: false
+  gdpr: false
+  pci: false
+  pipeda: false
+  none: false
+
+data:
+  classification: Internal
+
+governance:
+  model: Hybrid
+  user_base: Associates
+
+configuration:
+  corporate_network_required: true
+  github_enterprise: true
+  ai_usage: false
+
+security:
+  data_exposed_externally: false
+  protected_data: false
+  special_controls: false
+  gxp_standards: false
