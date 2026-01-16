@@ -4,6 +4,10 @@ on:
   issues:
     types: [opened, labeled]
 
+permissions:
+  issues: write
+  contents: read
+
 jobs:
   assign-copilot-agent:
     name: Assign Copilot Agent to Convert Issue
