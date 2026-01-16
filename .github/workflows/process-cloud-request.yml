@@ -31,12 +31,20 @@ jobs:
             
             console.log(`Processing cloud environment request issue #${issueNumber}`);
             
-            // Add a comment to trigger the Copilot agent
+            // Assign the issue to Copilot
+            await github.rest.issues.addAssignees({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              assignees: ['Copilot']
+            });
+            
+            // Add a comment with instructions for the Copilot agent
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issueNumber,
-              body: `@copilot Please use the \`convert-issue-to-yaml\` agent to convert this cloud environment request to a YAML file.
+              body: `Please use the \`convert-issue-to-yaml\` agent to convert this cloud environment request to a YAML file.
               
               Parse the issue body and generate a validated YAML file following the schema at \`schemas/cloud-environment-request.schema.json\`.
               
