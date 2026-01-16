@@ -2,6 +2,8 @@ name: Cloud Environment Request
 description: Request a new cloud environment for your application
 title: "[Cloud Request]: "
 labels: ["cloud-request"]
+assignees:
+  - copilot-swe-agent
 body:
   - type: textarea
     id: description
