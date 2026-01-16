@@ -1,0 +1,54 @@
+# Cloud Environment Request
+# Generated from GitHub Issue #1 (example)
+# Generated at: 2026-01-16T12:00:00Z
+
+metadata:
+  issue_number: 1
+  generated_at: "2026-01-16T12:00:00Z"
+  schema_version: "1.0"
+
+description: |
+  asdfasdf
+
+environments:
+  production:
+    requested: false
+  development:
+    requested: true
+    azure_region: eastus2
+  test:
+    requested: false
+  staging:
+    requested: false
+
+application:
+  name: asdfasfd
+  legal_entity: "20000"
+  cloud_provider: Azure
+  distribution_list_email: f@b.com
+
+compliance:
+  hipaa: false
+  ccpa: false
+  gdpr: false
+  pci: false
+  pipeda: false
+  none: true
+
+data:
+  classification: Public
+
+governance:
+  model: Hybrid
+  user_base: Associates
+
+configuration:
+  corporate_network_required: true
+  github_enterprise: true
+  ai_usage: false
+
+security:
+  data_exposed_externally: false
+  protected_data: true
+  special_controls: false
+  gxp_standards: true

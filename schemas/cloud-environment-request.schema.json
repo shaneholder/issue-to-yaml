@@ -1,0 +1,229 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/shaneholder/issue-to-yaml/schemas/cloud-environment-request.schema.json",
+  "title": "Cloud Environment Request",
+  "description": "Schema for validating cloud environment request YAML files generated from GitHub issues",
+  "type": "object",
+  "required": [
+    "metadata",
+    "description",
+    "environments",
+    "application",
+    "compliance",
+    "data",
+    "governance",
+    "configuration",
+    "security"
+  ],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "description": "Metadata about the request origin and generation",
+      "required": ["schema_version"],
+      "properties": {
+        "issue_number": {
+          "type": "integer",
+          "description": "The GitHub issue number this request was generated from",
+          "minimum": 1
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp when the YAML was generated"
+        },
+        "schema_version": {
+          "type": "string",
+          "description": "Version of this schema",
+          "pattern": "^\\d+\\.\\d+$",
+          "examples": ["1.0"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the cloud environment request",
+      "minLength": 1
+    },
+    "environments": {
+      "type": "object",
+      "description": "Environment configurations requested",
+      "required": ["production", "development", "test", "staging"],
+      "properties": {
+        "production": {
+          "$ref": "#/definitions/environment"
+        },
+        "development": {
+          "allOf": [
+            { "$ref": "#/definitions/environment" },
+            {
+              "properties": {
+                "azure_region": {
+                  "type": ["string", "null"],
+                  "description": "Azure region for development environment",
+                  "examples": ["eastus2", "westus2", "centralus"]
+                }
+              }
+            }
+          ]
+        },
+        "test": {
+          "$ref": "#/definitions/environment"
+        },
+        "staging": {
+          "$ref": "#/definitions/environment"
+        }
+      },
+      "additionalProperties": false
+    },
+    "application": {
+      "type": "object",
+      "description": "Application details",
+      "required": ["name", "legal_entity", "cloud_provider", "distribution_list_email"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the application",
+          "minLength": 1
+        },
+        "legal_entity": {
+          "type": "string",
+          "description": "Cencora legal entity code",
+          "pattern": "^\\d+$",
+          "examples": ["20000"]
+        },
+        "cloud_provider": {
+          "type": "string",
+          "description": "Selected cloud provider",
+          "enum": ["Azure", "AWS", "GCP"]
+        },
+        "distribution_list_email": {
+          "type": "string",
+          "format": "email",
+          "description": "Email address for notifications"
+        }
+      },
+      "additionalProperties": false
+    },
+    "compliance": {
+      "type": "object",
+      "description": "Compliance requirements",
+      "required": ["hipaa", "ccpa", "gdpr", "pci", "pipeda", "none"],
+      "properties": {
+        "hipaa": {
+          "type": "boolean",
+          "description": "HIPAA compliance required"
+        },
+        "ccpa": {
+          "type": "boolean",
+          "description": "CCPA compliance required"
+        },
+        "gdpr": {
+          "type": "boolean",
+          "description": "GDPR compliance required"
+        },
+        "pci": {
+          "type": "boolean",
+          "description": "PCI compliance required"
+        },
+        "pipeda": {
+          "type": "boolean",
+          "description": "PIPEDA compliance required"
+        },
+        "none": {
+          "type": "boolean",
+          "description": "No data compliance requirements"
+        }
+      },
+      "additionalProperties": false
+    },
+    "data": {
+      "type": "object",
+      "description": "Data handling configuration",
+      "required": ["classification"],
+      "properties": {
+        "classification": {
+          "type": "string",
+          "description": "Data classification level",
+          "enum": ["Public", "Internal", "Confidential", "Restricted"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "governance": {
+      "type": "object",
+      "description": "Governance model configuration",
+      "required": ["model", "user_base"],
+      "properties": {
+        "model": {
+          "type": "string",
+          "description": "Cloud governance model",
+          "enum": ["Hybrid", "Centralized", "Decentralized"]
+        },
+        "user_base": {
+          "type": "string",
+          "description": "Intended user base for the application",
+          "enum": ["Associates", "Customers", "Partners", "Public"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "configuration": {
+      "type": "object",
+      "description": "Additional configuration options",
+      "required": ["corporate_network_required", "github_enterprise", "ai_usage"],
+      "properties": {
+        "corporate_network_required": {
+          "type": "boolean",
+          "description": "Whether the application requires Cencora corporate network connectivity"
+        },
+        "github_enterprise": {
+          "type": "boolean",
+          "description": "Whether to use Cencora's GitHub Enterprise instance"
+        },
+        "ai_usage": {
+          "type": "boolean",
+          "description": "Whether the application uses artificial intelligence"
+        }
+      },
+      "additionalProperties": false
+    },
+    "security": {
+      "type": "object",
+      "description": "Security configuration",
+      "required": ["data_exposed_externally", "protected_data", "special_controls", "gxp_standards"],
+      "properties": {
+        "data_exposed_externally": {
+          "type": "boolean",
+          "description": "Whether Cencora data will be exposed externally"
+        },
+        "protected_data": {
+          "type": "boolean",
+          "description": "Whether the scope involves protected, company confidential, or US Government data"
+        },
+        "special_controls": {
+          "type": "boolean",
+          "description": "Whether the technology requires special controls"
+        },
+        "gxp_standards": {
+          "type": "boolean",
+          "description": "Whether GxP (Good x Practice) standards apply to this solution"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "environment": {
+      "type": "object",
+      "required": ["requested"],
+      "properties": {
+        "requested": {
+          "type": "boolean",
+          "description": "Whether this environment is requested"
+        }
+      }
+    }
+  }
+}
