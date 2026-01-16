@@ -1,0 +1,234 @@
+name: Cloud Environment Request
+description: Request a new cloud environment for your application
+title: "[Cloud Request]: "
+labels: ["cloud-request"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Provide a description of your cloud environment request
+      placeholder: Describe your request...
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "## Environment Selection"
+
+  - type: dropdown
+    id: cloud-env-production
+    attributes:
+      label: Cloud environment Production requested?
+      options:
+        - "No"
+        - "Yes"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: cloud-env-development
+    attributes:
+      label: Cloud environment Development requested?
+      options:
+        - "No"
+        - "Yes"
+    validations:
+      required: true
+
+  - type: input
+    id: azure-region-dev
+    attributes:
+      label: Azure Region for Development Environment
+      description: Specify the Azure region (e.g., eastus2)
+      placeholder: eastus2
+    validations:
+      required: false
+
+  - type: dropdown
+    id: cloud-env-test
+    attributes:
+      label: Cloud environment Test requested?
+      options:
+        - "No"
+        - "Yes"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: cloud-env-staging
+    attributes:
+      label: Cloud environment Staging requested?
+      options:
+        - "No"
+        - "Yes"
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "## Application Details"
+
+  - type: input
+    id: legal-entity
+    attributes:
+      label: Cencora Legal Entity Selection
+      description: Enter the legal entity code
+      placeholder: "20000"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: cloud-provider
+    attributes:
+      label: Select Cloud Provider
+      options:
+        - Azure
+        - AWS
+        - GCP
+    validations:
+      required: true
+
+  - type: input
+    id: application-name
+    attributes:
+      label: Application Name
+      description: Name of the application
+      placeholder: My Application
+    validations:
+      required: true
+
+  - type: input
+    id: distribution-list-email
+    attributes:
+      label: Distribution List Email
+      description: Email address for notifications
+      placeholder: team@example.com
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "## Compliance Requirements"
+
+  - type: checkboxes
+    id: compliance-requirements
+    attributes:
+      label: Compliance Requirements
+      description: Select all applicable compliance requirements
+      options:
+        - label: HIPAA
+        - label: CCPA
+        - label: GDPR
+        - label: PCI
+        - label: PIPEDA
+        - label: None (No Data Compliance)
+
+  - type: dropdown
+    id: data-classification
+    attributes:
+      label: Data Classification
+      options:
+        - Public
+        - Internal
+        - Confidential
+        - Restricted
+    validations:
+      required: true
+
+  - type: dropdown
+    id: governance-model
+    attributes:
+      label: Cloud Governance Model Selection
+      options:
+        - Hybrid
+        - Centralized
+        - Decentralized
+    validations:
+      required: true
+
+  - type: dropdown
+    id: user-base
+    attributes:
+      label: Who is the intended user base?
+      options:
+        - Associates
+        - Customers
+        - Partners
+        - Public
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: "## Additional Configuration"
+
+  - type: dropdown
+    id: corporate-network
+    attributes:
+      label: Does Your Application Require Cencora Corporate Network Connectivity?
+      options:
+        - "true"
+        - "false"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: github-enterprise
+    attributes:
+      label: Use Cencora's GitHub Enterprise instance as the Application & Infrastructure as Code repository?
+      options:
+        - "true"
+        - "false"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: ai-usage
+    attributes:
+      label: Artificial Intelligence Usage
+      options:
+        - "false"
+        - "true"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: data-exposed-externally
+    attributes:
+      label: Will Cencora data be exposed externally?
+      options:
+        - "false"
+        - "true"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: protected-data
+    attributes:
+      label: Does the scope involve protected, company confidential or US Government data?
+      options:
+        - "false"
+        - "true"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: special-controls
+    attributes:
+      label: Does this technology require special controls?
+      options:
+        - "false"
+        - "true"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: gxp-standards
+    attributes:
+      label: Do human/animal health quality standards and/or regulations (GxP/GoodxPractice) apply to this solution?
+      options:
+        - "false"
+        - "true"
+    validations:
+      required: true
